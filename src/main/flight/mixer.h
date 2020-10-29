@@ -42,8 +42,7 @@
 #define AIRMODE_AUTHORITY_MIN 10
 
 // Note: this is called MultiType/MULTITYPE_* in baseflight.
-typedef enum mixerMode
-{
+typedef enum mixerMode {
     MIXER_TRI = 1,
     MIXER_QUADP = 2,
     MIXER_QUADX = 3,
