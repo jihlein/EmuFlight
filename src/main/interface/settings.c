@@ -760,9 +760,12 @@ const clivalue_t valueTable[] = {
     { "throttle_limit_percent",     VAR_UINT8  | PROFILE_RATE_VALUE, .config.minmax = { 25, 100 }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, throttle_limit_percent) },
 
     { "vbat_comp_type",             VAR_UINT8  | PROFILE_RATE_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_VBAT_COMP_TYPE }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, vbat_comp_type) },
-    { "vbat_comp_ref"         ,     VAR_UINT8  | PROFILE_RATE_VALUE, .config.minmax = { VBAT_CELL_VOTAGE_RANGE_MIN, VBAT_CELL_VOTAGE_RANGE_MAX }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, vbat_comp_ref) },
-    { "vbat_comp_throttle_level",   VAR_UINT8  | PROFILE_RATE_VALUE, .config.minmax = { 0, 100 }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, vbat_comp_throttle_level) },
-    { "vbat_comp_pid_level",        VAR_UINT8  | PROFILE_RATE_VALUE, .config.minmax = { 0, 100 }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, vbat_comp_pid_level) },
+    { "vbat_comp_ref",              VAR_UINT8  | PROFILE_RATE_VALUE, .config.minmax = { VBAT_CELL_VOTAGE_RANGE_MIN, VBAT_CELL_VOTAGE_RANGE_MAX }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, vbat_comp_ref) },
+
+    { "thrust_linearization_level", VAR_UINT8  | PROFILE_RATE_VALUE, .config.minmax = { 0, 100 }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, thrust_linearization_level) },
+    { "use_throttle_linearization", VAR_UINT8  | PROFILE_RATE_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, use_throttle_linearization) },
+
+    { "use_airmode_v2",             VAR_UINT8  | PROFILE_RATE_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON }, PG_CONTROL_RATE_PROFILES, offsetof(controlRateConfig_t, use_airmode_v2) },
 
 // PG_SERIAL_CONFIG
     { "reboot_character",           VAR_UINT8  | MASTER_VALUE, .config.minmax = { 48, 126 }, PG_SERIAL_CONFIG, offsetof(serialConfig_t, reboot_character) },
@@ -912,12 +915,8 @@ const clivalue_t valueTable[] = {
     { "motor_output_limit",        VAR_UINT8 | PROFILE_VALUE,  .config.minmax = { MOTOR_OUTPUT_LIMIT_PERCENT_MIN, MOTOR_OUTPUT_LIMIT_PERCENT_MAX }, PG_PID_PROFILE, offsetof(pidProfile_t, motor_output_limit) },
     { "auto_profile_cell_count",   VAR_INT8  | PROFILE_VALUE,  .config.minmax = { AUTO_PROFILE_CELL_COUNT_CHANGE, MAX_AUTO_DETECT_CELL_COUNT }, PG_PID_PROFILE, offsetof(pidProfile_t, auto_profile_cell_count) },
 
-    { "airmode_min_slow_authority", VAR_UINT8 | PROFILE_VALUE, .config.minmax = { AIRMODE_AUTHORITY_MIN, 100 }, PG_PID_PROFILE, offsetof(pidProfile_t, airmode_min_slow_authority) },
-    { "airmode_min_fast_authority", VAR_UINT8 | PROFILE_VALUE, .config.minmax = { AIRMODE_AUTHORITY_MIN, 100 }, PG_PID_PROFILE, offsetof(pidProfile_t, airmode_min_fast_authority) },
-    { "airmode_med_slow_authority", VAR_UINT8 | PROFILE_VALUE, .config.minmax = { AIRMODE_AUTHORITY_MIN, 100 }, PG_PID_PROFILE, offsetof(pidProfile_t, airmode_med_slow_authority) },
-    { "airmode_med_fast_authority", VAR_UINT8 | PROFILE_VALUE, .config.minmax = { AIRMODE_AUTHORITY_MIN, 100 }, PG_PID_PROFILE, offsetof(pidProfile_t, airmode_med_fast_authority) },
-    { "airmode_max_slow_authority", VAR_UINT8 | PROFILE_VALUE, .config.minmax = { AIRMODE_AUTHORITY_MIN, 100 }, PG_PID_PROFILE, offsetof(pidProfile_t, airmode_max_slow_authority) },
-    { "airmode_max_fast_authority", VAR_UINT8 | PROFILE_VALUE, .config.minmax = { AIRMODE_AUTHORITY_MIN, 100 }, PG_PID_PROFILE, offsetof(pidProfile_t, airmode_max_fast_authority) },
+    { "airmode_min_authority",      VAR_UINT8 | PROFILE_VALUE, .config.minmax = { AIRMODE_AUTHORITY_MIN, 100 }, PG_PID_PROFILE, offsetof(pidProfile_t, airmode_min_authority) },
+    { "airmode_max_authority",      VAR_UINT8 | PROFILE_VALUE, .config.minmax = { AIRMODE_AUTHORITY_MIN, 100 }, PG_PID_PROFILE, offsetof(pidProfile_t, airmode_max_authority) },
     { "predictive_airmode_mult",    VAR_UINT8 | PROFILE_VALUE, .config.minmax = { 0, 25 }, PG_PID_PROFILE, offsetof(pidProfile_t, predictiveAirModeMultiplier) },
     { "predictive_airmode_hz",      VAR_UINT8 | PROFILE_VALUE, .config.minmax = { 1, 50 }, PG_PID_PROFILE, offsetof(pidProfile_t, predictiveAirModeHz) },
     { "axis_lock_multiplier",       VAR_UINT8 | PROFILE_VALUE, .config.minmax = { 0, 25 }, PG_PID_PROFILE, offsetof(pidProfile_t, axisLockMultiplier) },
