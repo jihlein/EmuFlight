@@ -83,7 +83,6 @@ COMMON_SRC = \
             flight/mixer_tricopter.c \
             flight/pid.c \
             flight/servos.c \
-            flight/servos_tricopter.c \
             interface/cli.c \
             interface/settings.c \
             io/serial_4way.c \

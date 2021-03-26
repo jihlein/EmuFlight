@@ -138,3 +138,6 @@ bool mixerIsTricopter(void);
 
 void mixerSetThrottleAngleCorrection(int correctionValue);
 float mixerGetLoggingThrottle(void);
+
+float getMotorOutputLow(void);
+float getMotorOutputHigh(void);

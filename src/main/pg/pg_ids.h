@@ -90,7 +90,7 @@
 #define PG_CURRENT_SENSOR_VIRTUAL_CONFIG 257
 #define PG_VOLTAGE_SENSOR_ADC_CONFIG 258
 #define PG_VTX_SETTINGS_CONFIG 259
-
+#define PG_TRIFLIGHT_CONFIG 260
 
 // betaflight specific parameter group ids start at 500
 #define PG_BETAFLIGHT_START 500

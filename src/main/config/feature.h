@@ -55,6 +55,7 @@ typedef enum {
     FEATURE_ESC_SENSOR = 1 << 27,
     FEATURE_DYNAMIC_FILTER = 1 << 28,
     FEATURE_LEGACY_SA_SUPPORT = 1 << 29,
+    FEATURE_TRIFLIGHT = 1 << 30,
 } features_e;
 
 typedef struct featureConfig_s {

@@ -49,6 +49,7 @@
 #include "flight/gps_rescue.h"
 #include "flight/imu.h"
 #include "flight/mixer.h"
+#include "flight/mixer_tricopter.h"
 #include "flight/pid.h"
 #include "flight/position.h"
 #include "flight/servos.h"
@@ -378,6 +379,14 @@ static const char * const lookupTableOsdLogoOnArming[] = {
 };
 #endif
 
+static const char * const lookupServoFeedback[] = {
+    "VIRTUAL", "RSSI", "CURRENT"
+};
+
+static const char * const lookupServoDirection[] = {
+    "NORMAL", "REVERSE"
+};
+
 #define LOOKUP_TABLE_ENTRY(name) { name, ARRAYLEN(name) }
 
 const lookupTableEntry_t lookupTables[] = {
@@ -466,6 +475,8 @@ const lookupTableEntry_t lookupTables[] = {
 #ifdef USE_OSD
     LOOKUP_TABLE_ENTRY(lookupTableOsdLogoOnArming),
 #endif
+    LOOKUP_TABLE_ENTRY(lookupServoFeedback),
+    LOOKUP_TABLE_ENTRY(lookupServoDirection),
 };
 
 #undef LOOKUP_TABLE_ENTRY
@@ -1184,8 +1195,38 @@ const clivalue_t valueTable[] = {
 // RCDEVICE
 #ifdef USE_RCDEVICE
     { "rcdevice_init_dev_attempts", VAR_UINT8 | MASTER_VALUE, .config.minmax = { 0, 10 }, PG_RCDEVICE_CONFIG, offsetof(rcdeviceConfig_t, initDeviceAttempts) },
-    { "rcdevice_init_dev_attempt_interval", VAR_UINT32 | MASTER_VALUE, .config.minmax = { 500, 5000 }, PG_RCDEVICE_CONFIG, offsetof(rcdeviceConfig_t, initDeviceAttemptInterval) }
+    { "rcdevice_init_dev_attempt_interval", VAR_UINT32 | MASTER_VALUE, .config.minmax = { 500, 5000 }, PG_RCDEVICE_CONFIG, offsetof(rcdeviceConfig_t, initDeviceAttemptInterval) },
 #endif
+
+// TRIFLIGHT
+    { "tri_dynamic_yaw_minthrottle",   VAR_UINT16 | MASTER_VALUE, .config.minmax = { DYNAMIC_YAW_MINTHROTTLE_MIN, DYNMAIC_YAW_MINTHROTTLE_MAX }, 
+                                       PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_dynamic_yaw_minthrottle) },
+    { "tri_dynamic_yaw_maxthrottle",   VAR_UINT16 | MASTER_VALUE, .config.minmax = { DYNAMIC_YAW_MAXTHROTTLE_MIN, DYNAMIC_YAW_MAXTHROTTLE_MAX },
+                                       PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_dynamic_yaw_maxthrottle) },
+    { "tri_dynamic_yaw_hoverthrottle", VAR_UINT16 | MASTER_VALUE, .config.minmax = { DYNAMIC_YAW_HOVERTHROTTLE_MIN, DYNAMIC_YAW_HOVERTHROTTLE_MAX },
+                                       PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_dynamic_yaw_hoverthrottle) },
+    { "tri_motor_acc_yaw_correction",  VAR_UINT16 | MASTER_VALUE, .config.minmax = { MOTOR_ACC_YAW_CORRECTION_MIN, MOTOR_ACC_YAW_CORRECTION_MAX },
+                                       PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_motor_acc_yaw_correction) },
+    { "tri_motor_acceleration",        VAR_UINT16 | MASTER_VALUE, .config.minmax = { MOTOR_ACCELERATION_MIN, MOTOR_ACCELERATION_MAX },
+	                                   PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_motor_acceleration) },
+    { "tri_servo_angle_at_max",        VAR_INT16  | MASTER_VALUE, .config.minmax = { TAIL_SERVO_ANGLE_MAX_MIN, TAIL_SERVO_ANGLE_MAX_MAX },
+                                       PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_servo_angle_at_max) },
+    { "tri_servo_feedback",            VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_TRI_SERVO_FDBK },
+                                       PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_servo_feedback) },
+    { "tri_servo_direction",           VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_TRI_SERVO_DIRECTION },
+                                       PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_servo_direction) },
+    { "tri_servo_max_adc",             VAR_INT16 | MASTER_VALUE, .config.minmax = { TAIL_SERVO_MAX_ADC_MIN, TAIL_SERVO_MAX_ADC_MAX },
+	                                   PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_servo_max_adc) },
+    { "tri_servo_mid_adc",             VAR_UINT16 | MASTER_VALUE, .config.minmax = { TAIL_SERVO_MID_ADC_MIN, TAIL_SERVO_MID_ADC_MAX },
+	                                   PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_servo_mid_adc) },
+    { "tri_servo_min_adc",             VAR_UINT16 | MASTER_VALUE, .config.minmax = { TAIL_SERVO_MIN_ADC_MIN, TAIL_SERVO_MIN_ADC_MAX },
+	                                   PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_servo_min_adc) },
+    { "tri_tail_motor_index",          VAR_UINT8  | MASTER_VALUE, .config.minmax = { TAIL_MOTOR_INDEX_MIN, TAIL_MOTOR_INDEX_MAX },
+	                                   PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_tail_motor_index) },
+    { "tri_tail_motor_thrustfactor",   VAR_INT16  | MASTER_VALUE, .config.minmax = { TAIL_THRUST_FACTOR_MIN, TAIL_THRUST_FACTOR_MAX },
+	                                   PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_tail_motor_thrustfactor) },
+    { "tri_tail_servo_speed",          VAR_INT16  | MASTER_VALUE, .config.minmax = { TAIL_SERVO_SPEED_MIN, TAIL_SERVO_SPEED_MAX },
+	                                   PG_TRIFLIGHT_CONFIG, offsetof(triflightConfig_t, tri_tail_servo_speed) },
 };
 
 const uint16_t valueTableEntryCount = ARRAYLEN(valueTable);

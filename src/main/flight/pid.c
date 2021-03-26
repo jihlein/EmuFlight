@@ -775,3 +775,8 @@ bool crashRecoveryModeActive(void) {
 float pidGetPreviousSetpoint(int axis) {
     return previousPidSetpoint[axis];
 }
+
+float pidGetDT()
+{
+    return dT;
+}

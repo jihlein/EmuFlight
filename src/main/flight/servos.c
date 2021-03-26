@@ -47,6 +47,7 @@
 
 #include "flight/imu.h"
 #include "flight/mixer.h"
+#include "flight/mixer_tricopter.h"
 #include "flight/pid.h"
 #include "flight/servos.h"
 
@@ -223,8 +224,8 @@ void servosInit(void) {
     for (uint8_t i = 0; i < MAX_SUPPORTED_SERVOS; i++) {
         servo[i] = DEFAULT_SERVO_MIDDLE;
     }
-    if (mixerIsTricopter()) {
-        servosTricopterInit();
+    if (featureConfigured(FEATURE_TRIFLIGHT) && mixerIsTricopter()) {
+        triInitMixer(servoParamsMutable(SERVO_RUDDER), &servo[SERVO_RUDDER]);
     }
 }
 
@@ -304,7 +305,7 @@ void writeServos(void) {
     switch (currentMixerMode) {
     case MIXER_TRI:
     case MIXER_CUSTOM_TRI:
-        if (servosTricopterIsEnabledServoUnarmed()) {
+        if (triIsEnabledServoUnarmed()) {
             // if unarmed flag set, we always move servo
             pwmWriteServo(servoIndex++, servo[SERVO_RUDDER]);
         } else {
@@ -364,6 +365,12 @@ void writeServos(void) {
 void servoMixer(void) {
     int16_t input[INPUT_SOURCE_COUNT]; // Range [-500:+500]
     static int16_t currentOutput[MAX_SERVO_RULES];
+    if (featureConfigured(FEATURE_TRIFLIGHT) && mixerIsTricopter())
+    {
+        triServoMixer(pidData[FD_YAW].Sum);
+    }
+    else
+    {
     if (FLIGHT_MODE(PASSTHRU_MODE)) {
         // Direct passthru from RX
         input[INPUT_STABILIZED_ROLL] = rcCommand[ROLL];
@@ -425,16 +432,14 @@ void servoMixer(void) {
         servo[i] = ((int32_t)servoParams(i)->rate * servo[i]) / 100L;
         servo[i] += determineServoMiddleOrForwardFromChannel(i);
     }
+	}
 }
-
 
 static void servoTable(void) {
     // airplane / servo mixes
     switch (currentMixerMode) {
     case MIXER_CUSTOM_TRI:
     case MIXER_TRI:
-        servosTricopterMixer();
-        break;
     case MIXER_CUSTOM_AIRPLANE:
     case MIXER_FLYING_WING:
     case MIXER_AIRPLANE:
