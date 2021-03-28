@@ -224,9 +224,8 @@ void servosInit(void) {
     for (uint8_t i = 0; i < MAX_SUPPORTED_SERVOS; i++) {
         servo[i] = DEFAULT_SERVO_MIDDLE;
     }
-    if (featureConfigured(FEATURE_TRIFLIGHT) && mixerIsTricopter()) {
-        triInitMixer(servoParamsMutable(SERVO_RUDDER), &servo[SERVO_RUDDER]);
-    }
+
+    triInitMixer(servoParamsMutable(SERVO_RUDDER), &servo[SERVO_RUDDER]);
 }
 
 void loadCustomServoMixer(void) {

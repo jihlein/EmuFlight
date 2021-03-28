@@ -20,20 +20,16 @@
 
 #pragma once
 
-//#define USE_TARGET_CONFIG
 #if defined(KAKUTEF7MINIV2)
-#define TARGET_BOARD_IDENTIFIER "KF7M"
-#define USBD_PRODUCT_STRING "KakuteF7 Mini V2"
+  #define TARGET_BOARD_IDENTIFIER "KF7M"
+  #define USBD_PRODUCT_STRING "KakuteF7 Mini V2"
 #elif defined(KAKUTEF7V15)
-#define TARGET_BOARD_IDENTIFIER "KTF7"
-#define USBD_PRODUCT_STRING "Kakutef7 v15"
+  #define TARGET_BOARD_IDENTIFIER "KTF7"
+  #define USBD_PRODUCT_STRING "Kakutef7 v15"
 #else
-#define TARGET_BOARD_IDENTIFIER "KTF7"
-#define USBD_PRODUCT_STRING "KakuteF7 HD"
+  #define TARGET_BOARD_IDENTIFIER "KTF7"
+  #define USBD_PRODUCT_STRING "KakuteF7 HD"
 #endif
-
-#define TARGET_BOARD_IDENTIFIER "KTF7"
-#define USBD_PRODUCT_STRING "KakuteF7"
 
 #define LED0_PIN                PA2
 
@@ -49,15 +45,15 @@
 #define USE_GYRO_SPI_MPU6000
 #define GYRO_MPU6000_ALIGN      CW270_DEG
 #define ACC_MPU6000_ALIGN       CW270_DEG
-#define MPU_INT_EXTI               PE1
+#define MPU_INT_EXTI            PE1
 
 #define MPU6000_CS_PIN          SPI4_NSS_PIN
 #define MPU6000_SPI_INSTANCE    SPI4
-#define GYRO_1_CS_PIN            MPU6000_CS_PIN
-#define GYRO_1_SPI_INSTANCE      MPU6000_SPI_INSTANCE
+#define GYRO_1_CS_PIN           MPU6000_CS_PIN
+#define GYRO_1_SPI_INSTANCE     MPU6000_SPI_INSTANCE
 
-#define ACC_1_ALIGN              ACC_MPU6000_ALIGN
-#define GYRO_1_ALIGN             GYRO_MPU6000_ALIGN
+#define ACC_1_ALIGN             ACC_MPU6000_ALIGN
+#define GYRO_1_ALIGN            GYRO_MPU6000_ALIGN
 
 #define USE_MPU_DATA_READY_SIGNAL
 #define USE_EXTI
@@ -176,9 +172,7 @@
 #define VBAT_ADC_PIN            PC3
 #define RSSI_ADC_PIN            PC5
 
-
-
-#define DEFAULT_FEATURES        (FEATURE_OSD)
+#define DEFAULT_FEATURES        FEATURE_OSD
 #define DEFAULT_RX_FEATURE      FEATURE_RX_SERIAL
 #define SERIALRX_UART           SERIAL_PORT_USART6
 #define SERIALRX_PROVIDER       SERIALRX_SBUS
